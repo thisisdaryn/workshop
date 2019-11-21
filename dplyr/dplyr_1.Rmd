@@ -1,0 +1,188 @@
+---
+title: "dplyr 1: core functions"
+subtitle: "Daryn Ramsden"
+author: "thisisdaryn at gmail dot com"
+date: "last updated: `r Sys.Date()`"
+institution: ""
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: xaringan-themer.css
+    chakra: libs/remark.js
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(fig.align="center", fig.width=5, fig.height=5, warning = FALSE, message = FALSE)
+```
+
+```{r xaringan-themer, include = FALSE}
+library(xaringanthemer)
+duo_accent(
+  primary_color = "ivory",
+  secondary_color = "#310A31",
+  header_font_google = google_font("Roboto", "400"),
+  text_font_google   = google_font("Lato", "300"),
+  code_font_family = "Fira Code",
+  code_font_url = "https://cdn.rawgit.com/tonsky/FiraCode/1.204/distr/fira_code.css",
+  header_color = "#f54278",
+  title_slide_text_color = "#354a66"
+)
+```
+
+### What is dplyr?
+
+
+  * subsetting
+  
+    * <tt>filter</tt>: selecting specified rows 
+    * <tt>select</tt>: selecting specified columns
+    
+--
+
+  * sorting
+  
+    * <tt>arrange</tt>
+    
+--
+
+
+  * adding new variables
+    
+    * <tt>mutate</tt>
+--
+
+  * aggregating data
+  
+    * <tt>group_by</tt> and <tt>summarise</tt>
+
+
+
+---
+### The common pattern 
+
+Each of these functions meet the following:
+  
+  * the first argument is a data frame
+  
+  * there are a variable number of following arguments
+  
+  
+---
+### filter: specifying row conditions
+
+How do we get:
+  * all individuals in either the Police or Fire Departments 
+
+--
+
+```{r}
+library(workshop)
+library(dplyr)
+chi2 <- filter(chi_emps, Dept %in% c("POLICE", "FIRE"))
+```
+
+---
+### filter
+
+How do we get all individuals meeting the following:
+  * in either the Police or Fire Departments
+  * salaried
+
+```{r}
+chi3 <- filter(chi_emps, Dept %in% c("POLICE", "FIRE"),
+               SalHour == "Salary")
+```
+
+
+---
+### select
+
+What if we wanted to keep only the columns of **chi3** related to salaried employees 
+
+```{r}
+chi4 <- select(chi3, Name, Titles,  Dept, FullPart, AnnSalary)
+```
+
+
+#### or 
+
+--
+
+```{r}
+chi5 <- select(chi3, -SalHour, -HourlyRate, -TypicalHours)
+```
+
+
+--
+
+
+
+Are <tt>chi4</tt> and <tt>chi5</tt> equivalent data sets? 
+
+
+
+---
+### arrange
+
+How do we sort by salary?
+
+```{r}
+chi6 <- arrange(chi4, AnnSalary)
+```
+
+```{r}
+chi7 <- arrange(chi4, desc(AnnSalary))
+```
+
+
+---
+### group_by and summarise
+
+  * <tt>group_by</tt>: partitions the data frame into groups by adding some invisible group information
+  
+  * <tt>summarise</tt>: aggregates data for each group 
+  
+  
+---
+### Example
+
+What is the median salary in each department? 
+
+
+```{r}
+grp_sal <- group_by(chi_emps, Dept)
+```
+
+
+
+```{r}
+avg_sals <- summarise(grp_sal, 
+                AvgSalary = mean(AnnSalary, na.rm = TRUE))
+```
+
+
+
+```{r}
+avg_sals <- summarise(grp_sal, 
+                      AvgSalary = mean(AnnSalary, na.rm = TRUE),
+                      numEmps = n())
+```
+
+
+---
+### What 
+
+```{r echo = FALSE}
+reactable::reactable(avg_sals, )
+```
+
+
+
+

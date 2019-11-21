@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>More about functions</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="thisisdaryn at gmail dot com" />
+    <link href="libs/pagedtable/css/pagedtable.css" rel="stylesheet" />
+    <script src="libs/pagedtable/js/pagedtable.js"></script>
+    <script src="libs/core-js/shim.min.js"></script>
+    <script src="libs/react/react.min.js"></script>
+    <script src="libs/react/react-dom.min.js"></script>
+    <script src="libs/reactwidget/react-tools.js"></script>
+    <script src="libs/htmlwidgets/htmlwidgets.js"></script>
+    <script src="libs/reactable-binding/reactable.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# More about functions
+## Daryn Ramsden
+### thisisdaryn at gmail dot com
+### last updated: 2019-11-21
+
+---
+
+
+
+
+
+
+
+
+
+---
+### What are functions?
+
+&lt;b&gt;**function**&lt;/b&gt;: reusable code that performs a well-articulated task 
+
+--
+
+--
+
+What types of task:
+
+--
+
+  * return a value e.g. &lt;tt&gt;max&lt;/tt&gt; gives the largest of a set of values
+  
+--
+  
+  * other actions e.g. &lt;tt&gt;plot&lt;/tt&gt; creates graphs
+  
+  
+
+
+
+---
+### How to use
+
+
+  * calling functions, use the function name followed by &lt;tt&gt;()&lt;/tt&gt; 
+
+--
+  
+  * arguments: the inputs to functions
+    
+    * placed inside the &lt;tt&gt;()&lt;/tt&gt;
+    
+    * some arguments may be mandatory; others optional
+    
+--
+
+  * get help by using &lt;tt&gt;?&lt;/tt&gt; before function name. Help page will show in the help window.
+
+
+```r
+?plot
+```
+  
+
+
+---
+### Where do you get functions
+
+We can think of 3 sources of functions:
+
+--
+
+  * built-in to R e.g. &lt;tt&gt;plot&lt;/tt&gt;, &lt;tt&gt;max&lt;/tt&gt;, &lt;tt&gt;table&lt;/tt&gt;, &lt;tt&gt;summary&lt;/tt&gt;
+  
+--
+  
+  * installed via packages 
+  
+--
+  
+  * you can write your own 
+  
+
+
+
+
+---
+### What is a package?
+
+A **package**: is a collection of functions and data. 
+
+Some examples:
+  
+  * ggplot2: a package with graphical functions 
+  
+  * dplyr and tidyr: packages for data wrangling
+  
+  * caret: a package for machine learning
+  
+  * data.table: a package for making operations with extremely large data sets fast
+  
+  
+---
+### CRAN
+
+Comprehensive R Archive Network (CRAN): The official repository of packages for the R language.
+
+&lt;img src="images/CRANScreen.png" width="3293" style="display: block; margin: auto;" /&gt;
+
+---
+### Installing and using packages 
+
+  * &lt;tt&gt;install.packages&lt;/tt&gt;
+    * only needs to be run once to install the package. 
+    
+    * gets the package from the Comprehensive R Archive Network (CRAN)
+    
+
+#### Example: Installing the genius package
+
+
+```r
+install.packages("genius")
+```
+
+---
+### 
+
+&lt;tt&gt;library&lt;/tt&gt;: gives you access to the functions and data of a package that is already installed
+
+#### Example: 
+
+First try to use the &lt;tt&gt;genius_lyrics&lt;/tt&gt; function of the &lt;tt&gt;genius&lt;/tt&gt; package: 
+--
+
+```r
+sg &lt;- genius_lyrics(artist = "Kes", song = "Savannah Grass")
+```
+
+```
+## Error in genius_lyrics(artist = "Kes", song = "Savannah Grass"): could not find function "genius_lyrics"
+```
+
+
+--
+
+Now use &lt;tt&gt;library&lt;/tt&gt;: 
+
+
+```r
+library(genius)
+sg &lt;- genius_lyrics(artist = "Kes", song = "Savannah Grass")
+```
+
+---
+
+```r
+sg
+```
+<div id="htmlwidget-ddabb0f7ac92248184f6" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-ddabb0f7ac92248184f6">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"track_title":["Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass","Savannah Grass"],"line":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83],"lyric":["Oh na, na, na","Oh na, na, na","Mhm","Eh, eh","If you know yeah","Den you know yeah","Eh","We all on de ground yeah","We holding it down yeah","We open history","It's Savannah Jouvert morning","Jouvert morning","Everybody comin' in","Eh","We ready we ready to blow yeah","We goin' make dem jump","We goin' make dem turn up","We goin' make dem wine","We goin' make dem free up","Is de place of Bacchanal","In this sweet botanical","This Carnival","I want you to find your way","Everybody on stage","Oh Lord oh","If you comin' down from the mountain","Oh God oh","When de riddim beat is in town","See me jumpin' on de Savannah grass","De Savannha grass","You can see it all in de dust waves","Oh Lord oh","When the people tell you they cannot wait","Oh God  oh","Feel the spirit jumpin' in town","We comin' round, de Savannah grass","De Savannah Grass","We up wid de sun yeah","We take over town yeah","We makin' de most yeah","Two days not even no","Is love we feeling","Look everybody revelling","They ready, they ready to go yeah","We goin' make dem jump","We goin' make dem turn up","We goin' make dem wine","We goin' make dem free up","Is de place of Bacchanal","With our vibes so magical","This Carnival","I want you to fin your way","Everybody on stage","Oh Lord oh","If you comin' down from the mountain","Oh lord","When de riddim beat is in town","See me jumpin' on de Savannah grass","De Savannha grass","You can see it all in de dust waves","Oh Lord oh","When the people tell you they cannot wait","Oh Lord oh","Feel the spirit jumpin' in town","We comin' round, de Savannah grass","De Savannah Grass","Oh na, na, na","Is Savannah Jouvert morning","(Ah)","Mmm","Oh na, na, na","Eh, eh","(Ah)","If you know yeah","(Make them turn)","If you know yeah","(Make them turn up)","(Make them wine)","(Make them free up)","We all in de ground yeah","We holdin' it down yeah","We open history","Is Savannah Jouvert morning"]},"columns":[{"accessor":"track_title","name":"track_title","type":"character"},{"accessor":"line","name":"line","type":"numeric"},{"accessor":"lyric","name":"lyric","type":"character"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"dataKey":"a0354e799a4f0439ccbfd6401cfdd048"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+
+
+
+---
+### Writing our own functions 
+
+Write a function th 
+  * input: 
+    * a vector of variables
+    * a number **n**
+    
+  * action: identifies the n most common values in the list 
+  
+  
+Example:
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>dplyr 1: core functions</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="thisisdaryn at gmail dot com" />
+    <script src="libs/core-js/shim.min.js"></script>
+    <script src="libs/react/react.min.js"></script>
+    <script src="libs/react/react-dom.min.js"></script>
+    <script src="libs/reactwidget/react-tools.js"></script>
+    <script src="libs/htmlwidgets/htmlwidgets.js"></script>
+    <script src="libs/reactable-binding/reactable.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# dplyr 1: core functions
+## Daryn Ramsden
+### thisisdaryn at gmail dot com
+### last updated: 2019-11-20
+
+---
+
+
+
+
+
+
+
+
+### What is dplyr?
+
+
+  * subsetting
+  
+    * &lt;tt&gt;filter&lt;/tt&gt;: selecting specified rows 
+    * &lt;tt&gt;select&lt;/tt&gt;: selecting specified columns
+    
+--
+
+  * sorting
+  
+    * &lt;tt&gt;arrange&lt;/tt&gt;
+    
+--
+
+
+  * adding new variables
+    
+    * &lt;tt&gt;mutate&lt;/tt&gt;
+--
+
+  * aggregating data
+  
+    * &lt;tt&gt;group_by&lt;/tt&gt; and &lt;tt&gt;summarise&lt;/tt&gt;
+
+
+
+---
+### The common pattern 
+
+Each of these functions meet the following:
+  
+  * the first argument is a data frame
+  
+  * there are a variable number of following arguments
+  
+  
+---
+### filter: specifying row conditions
+
+How do we get:
+  * all individuals in either the Police or Fire Departments 
+
+--
+
+
+```r
+library(workshop)
+library(dplyr)
+chi2 &lt;- filter(chi_emps, Dept %in% c("POLICE", "FIRE"))
+```
+
+---
+### filter
+
+How do we get all individuals meeting the following:
+  * in either the Police or Fire Departments
+  * salaried
+
+
+```r
+chi3 &lt;- filter(chi_emps, Dept %in% c("POLICE", "FIRE"),
+               SalHour == "Salary")
+```
+
+
+---
+### select
+
+What if we wanted to keep only the columns of **chi3** related to salaried employees 
+
+
+```r
+chi4 &lt;- select(chi3, Name, Titles,  Dept, FullPart, AnnSalary)
+```
+
+
+#### or 
+
+--
+
+
+```r
+chi5 &lt;- select(chi3, -SalHour, -HourlyRate, -TypicalHours)
+```
+
+
+--
+
+
+
+Are &lt;tt&gt;chi4&lt;/tt&gt; and &lt;tt&gt;chi5&lt;/tt&gt; equivalent data sets? 
+
+
+
+---
+### arrange
+
+How do we sort by salary?
+
+
+```r
+chi6 &lt;- arrange(chi4, AnnSalary)
+```
+
+
+```r
+chi7 &lt;- arrange(chi4, desc(AnnSalary))
+```
+
+
+---
+### group_by and summarise
+
+  * &lt;tt&gt;group_by&lt;/tt&gt;: partitions the data frame into groups by adding some invisible group information
+  
+  * &lt;tt&gt;summarise&lt;/tt&gt;: aggregates data for each group 
+  
+  
+---
+### Example
+
+What is the median salary in each department? 
+
+
+
+```r
+grp_sal &lt;- group_by(chi_emps, Dept)
+```
+
+
+
+
+```r
+avg_sals &lt;- summarise(grp_sal, 
+                AvgSalary = mean(AnnSalary, na.rm = TRUE))
+```
+
+
+
+
+```r
+avg_sals &lt;- summarise(grp_sal, 
+                      AvgSalary = mean(AnnSalary, na.rm = TRUE),
+                      numEmps = n())
+```
+
+
+---
+### What 
+
+<div id="htmlwidget-aa602b30d7290bb3a4c3" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-aa602b30d7290bb3a4c3">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Dept":["ADMIN HEARNG","ANIMAL CONTRL","AVIATION","BOARD OF ELECTION","BOARD OF ETHICS","BUDGET & MGMT","BUILDINGS","BUSINESS AFFAIRS","CITY CLERK","CITY COUNCIL","COMMUNITY DEVELOPMENT","COPA","CULTURAL AFFAIRS","DISABILITIES","DoIT","FAMILY & SUPPORT","FINANCE","FIRE","GENERAL SERVICES","HEALTH","HOUSING","HUMAN RELATIONS","HUMAN RESOURCES","INSPECTOR GEN","LAW","LICENSE APPL COMM","MAYOR'S OFFICE","OEMC","POLICE","POLICE BOARD","PROCUREMENT","PUBLIC LIBRARY","STREETS & SAN","TRANSPORTN","TREASURER","WATER MGMNT"],"AvgSalary":[82621.6666666667,70325.3333333333,78534.1077966102,51856.3274336283,99553.5,99106.8837209302,105417.906666667,83319.5923566879,72707.8085393258,70550.1750537634,88270.72,81953.8,89091.2380952381,87201.8571428571,105512.93877551,83631.3311688312,74495.1085714286,97250.8767825723,86482.2251020408,88623.025862069,90213.28125,93831.3333333333,83688.1578947368,84434.6666666667,92265.0747922438,92136,103265.55,76739.5013127413,86929.7803526448,89784,87823.5180722892,72965.9087136929,87086.954954955,93042.8730927835,92058.6,94852.6537815126],"numEmps":[36,76,1433,113,8,45,261,167,107,382,150,120,74,30,98,622,565,4775,953,466,64,18,77,90,402,1,105,2012,13929,2,86,1080,2075,1214,25,1925]},"columns":[{"accessor":"Dept","name":"Dept","type":"character"},{"accessor":"AvgSalary","name":"AvgSalary","type":"numeric"},{"accessor":"numEmps","name":"numEmps","type":"numeric"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"dataKey":"e64682b5eee24865518a7865b7399a32"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

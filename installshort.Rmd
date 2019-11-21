@@ -1,0 +1,73 @@
+---
+title: "Installing Software and data for R workshop"
+output:
+  html_document:
+    df_print: paged
+---
+
+
+For a more detailed explanation of this process [click here](installdetailed.html): 
+
+
+## 1. Install R and RStudio
+
+  * Download R @ The [R Project’s Home Page](https://cloud.r-project.org/)
+    
+    * Windows: 
+      * [https://cloud.r-project.org/bin/windows/base/R-3.6.1-win.exe](https://cloud.r-project.org/bin/windows/base/R-3.6.1-win.exe)
+    
+    * Mac: 
+      * [https://cloud.r-project.org/bin/macosx/R-3.6.1.pkg](https://cloud.r-project.org/bin/macosx/R-3.6.1.pkg)
+    * Linux
+      * [https://cloud.r-project.org/bin/linux/](https://cloud.r-project.org/bin/linux/)
+    
+  * Download RStudio Desktop from [RStudio](https://www.rstudio.com/products/rstudio/download/#download)
+    * Windows
+      * [https://download1.rstudio.org/desktop/windows/RStudio-1.2.5019.exe](https://download1.rstudio.org/desktop/windows/RStudio-1.2.5019.exe)
+    * Mac
+      * [https://cloud.r-project.org/bin/macosx/R-3.6.1.pkg](https://cloud.r-project.org/bin/macosx/R-3.6.1.pkg)
+    * Linux
+      * [https://www.rstudio.com/products/rstudio/download/#download](https://www.rstudio.com/products/rstudio/download/#download)
+  
+  * Run the installers for R and RStudio, in that order.
+  
+## 2. Open RStudio
+
+It should look like this when you do:
+![](images/RStudioScreen.png)
+
+## 3. Install additional packages and data
+  
+  * copy-paste the text below into the command window 
+  * hit enter
+  * accept any defaults if you get prompted
+  * this may take a while
+  
+```{r eval = FALSE}
+install.packages("tidyverse")
+install.packages("devtools")
+library(devtools)
+install_github("thisisdaryn/workshop")
+install.packages("nycflights13")
+```
+
+## 4. Test it out
+
+**Copy-paste the following text into the command window and hit enter**. 
+
+  * If the picture shows up then you have installed all the necessary packages.
+  * Don't worry if you don't understand the commands. 
+
+```{r message = FALSE, warning = FALSE}
+library(ggplot2)
+library(workshop)
+
+big_depts <- names(sort(table(chi_emps$Dept), decreasing = TRUE)[1:5])
+df <- chi_emps[chi_emps$Dept %in% big_depts, ]
+ggplot(data = df, aes(x = Dept, y = AnnSalary)) + geom_boxplot()
+```
+
+
+
+ 
+
