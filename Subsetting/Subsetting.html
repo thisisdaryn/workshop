@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>My Awesome Title</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="thisisdaryn at gmail dot com" />
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# My Awesome Title
+## Daryn Ramsden
+### thisisdaryn at gmail dot com
+### last updated: 2019-11-22
+
+---
+
+
+
+
+
+
+
+
+
+### A note 
+
+  * These slides make use of the &lt;tt&gt;chi_emps&lt;/tt&gt; data set contained in the &lt;tt&gt;workshop&lt;tt&gt; package. 
+
+  * 
+
+
+```r
+library(workshop)
+data(chi_emps)
+```
+
+
+
+---
+### Getting summary information
+
+How big is the  data set? 
+--
+
+```r
+dim(chi_emps)
+```
+
+```
+## [1] 33586     8
+```
+--
+What are the names of the columns?
+
+```r
+names(chi_emps)
+```
+
+```
+## [1] "Name"         "Titles"       "Dept"         "FullPart"    
+## [5] "SalHour"      "TypicalHours" "AnnSalary"    "HourlyRate"
+```
+--
+You can use **summary** or **View** as well to get more info. 
+
+
+---
+### summary 
+
+What happens when you run the following? 
+
+
+```r
+summary(chi_emps)
+```
+
+---
+### summary 
+
+What happens when you run the following? 
+
+
+```r
+summary(chi_emps)
+```
+
+```
+##      Name              Titles              Dept          
+##  Length:33586       Length:33586       Length:33586      
+##  Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character  
+##                                                          
+##                                                          
+##                                                          
+##                                                          
+##    FullPart           SalHour           TypicalHours     AnnSalary     
+##  Length:33586       Length:33586       Min.   :10.00   Min.   :  8400  
+##  Class :character   Class :character   1st Qu.:35.00   1st Qu.: 75408  
+##  Mode  :character   Mode  :character   Median :40.00   Median : 90024  
+##                                        Mean   :34.92   Mean   : 87845  
+##                                        3rd Qu.:40.00   3rd Qu.: 97440  
+##                                        Max.   :40.00   Max.   :275004  
+##                                        NA's   :25638   NA's   :7948    
+##    HourlyRate    
+##  Min.   :  2.65  
+##  1st Qu.: 21.73  
+##  Median : 36.45  
+##  Mean   : 34.11  
+##  3rd Qu.: 44.09  
+##  Max.   :128.00  
+##  NA's   :25638
+```
+
+
+---
+### (View)
+
+
+and what about this?
+
+
+```r
+View(chi_emps)
+```
+
+
+
+---
+### Selecting only some columns
+
+In base R, **[]** is used to subset data. For a 2d data structure, we have row conditions and column conditions separated by a comma inside the **[]**.
+--
+
+
+For example, we can select the first 5 rows and the first 4 columns of the *chi_emps* data frame:
+
+--
+
+```r
+chi_emps[c(1:5),c(1:4)]
+```
+
+```
+##                  Name                                 Titles
+## 1   AARON,  JEFFERY M                               SERGEANT
+## 2      AARON,  KARINA POLICE OFFICER (ASSIGNED AS DETECTIVE)
+## 3 AARON,  KIMBERLEI R               CHIEF CONTRACT EXPEDITER
+## 4 ABAD JR,  VICENTE M                      CIVIL ENGINEER IV
+## 5   ABARCA,  EMMANUEL                       CONCRETE LABORER
+##               Dept FullPart
+## 1           POLICE        F
+## 2           POLICE        F
+## 3 GENERAL SERVICES        F
+## 4      WATER MGMNT        F
+## 5       TRANSPORTN        F
+```
+
+
+
+---
+### Selecting columns by name
+
+It's often more practical to select columns by name however. The following code:
+  - keeps only the *Name*, *Dept*, *AnnSalary* columns
+  - displays the dimensions of the smaller data set
+--
+
+```r
+chi2 &lt;- chi_emps[, c("Name", "Dept", 
+                    "AnnSalary")]
+dim(chi2)
+```
+
+```
+## [1] 33586     3
+```
+--
+Note that there was no row constraint in the first line as we were intending to keep all rows of the data.
+
+---
+### Rows can also be selected using logical operators
+
+How do we select all the rows where the annual salary is in the interquartile range
+--
+
+
+The code below:
+  - keeps only the rows where the salary is between than $75408 and $97440 
+  - displays the first few rows
+--
+
+```r
+midsal &lt;- chi2[chi2$AnnSalary &gt;= 75408 &amp; chi2$AnnSalary &lt;= 97440, ]
+head(midsal)
+```
+
+```
+##                  Name   Dept AnnSalary
+## 2      AARON,  KARINA POLICE     94122
+## NA               &lt;NA&gt;   &lt;NA&gt;        NA
+## NA.1             &lt;NA&gt;   &lt;NA&gt;        NA
+## NA.2             &lt;NA&gt;   &lt;NA&gt;        NA
+## 10   ABBATE,  TERRY M POLICE     93354
+## NA.3             &lt;NA&gt;   &lt;NA&gt;        NA
+```
+--
+Note that there is no column constraint as we are keeping all the columns.
+
+
+---
+### What are the other logical operators that can be used in filtering rows?
+
+The previous slide made use of **&lt;**, multiple other operators are available for filtering: 
+--
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Operator &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Meaning &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; == &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; equal &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; != &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; not equal &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; &amp;lt; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; less than &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; &amp;lt;= &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; less than or equal to &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; &amp;gt; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; greater than &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; &amp;gt;= &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; greater than or equal to &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; | &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Or: at least one of the expressions is true &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; &amp;amp; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; And: Both expressions are true &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; ! &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Not: the expression is not true &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
+
+---
+### Some more examples
+
+How would we get a data set with only hourly paid employees?
+
+
+```r
+hourly &lt;- chi_emps[chi_emps$SalHour == "Hourly", ]
+```
+
+
+
+
+---
+### Following up on that
+
+How would we get loans that meet both of the following:
+  - have an hourly rate more than $20/hr
+  - typical hours more than 25 
+--
+
+
+```r
+df &lt;- hourly[(hourly$HourlyRate &gt; 20) &amp; 
+               (hourly$TypicalHours &gt; 25), ]
+head(df)
+```
+
+```
+## # A tibble: 6 x 8
+##   Name    Titles   Dept  FullPart SalHour TypicalHours AnnSalary HourlyRate
+##   &lt;chr&gt;   &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
+## 1 ABARCA… CONCRET… TRAN… F        Hourly            40        NA       43.7
+## 2 ABBATA… ELECTRI… AVIA… F        Hourly            40        NA       49.4
+## 3 ABDULL… ELECTRI… GENE… F        Hourly            40        NA       49.4
+## 4 ABDUL-… GENERAL… STRE… F        Hourly            40        NA       24.5
+## 5 ABRAMS… SANITAT… STRE… F        Hourly            40        NA       37.8
+## 6 ABRAMS… POOL MO… STRE… F        Hourly            40        NA       36.4
+```
+
+
+---
+### Another example
+
+How would we get loans that meet either of the following:
+  - the Department is *PUBLIC LIBRARY* 
+  - the employee is Part-time, (&lt;tt&gt;FullPart&lt;/tt&gt;: *P*) 
+  
+--
+
+```r
+lib_part &lt;- chi_emps[chi_emps$Dept == "PUBLIC LIBRARY" | 
+                chi_emps$FullPart == "P", ] 
+head(lib_part)
+```
+
+```
+## # A tibble: 6 x 8
+##   Name    Titles   Dept  FullPart SalHour TypicalHours AnnSalary HourlyRate
+##   &lt;chr&gt;   &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
+## 1 ABASCA… TRAFFIC… OEMC  P        Hourly            20        NA      19.9 
+## 2 ABBOTT… FOSTER … FAMI… P        Hourly            20        NA       2.65
+## 3 ACKLIN… CROSSIN… OEMC  P        Hourly            20        NA      18.5 
+## 4 ACOSTA… LIBRARY… PUBL… F        Salary            NA     72480      NA   
+## 5 ACUNA … SENIOR … FAMI… P        Hourly            20        NA       2.65
+## 6 ADAMS,… TITLE V… FAMI… P        Hourly            20        NA       8.25
+```
+
+  
+
+---
+### Using **$** to reference columns 
+
+Another means of subsetting data that we would have seen before is the **$** 
+--
+
+```r
+hist(chi_emps$HourlyRate)
+```
+
+&lt;img src="Subsetting_files/figure-html/unnamed-chunk-14-1.png" style="display: block; margin: auto;" /&gt;
+
+
+
+--
+
+
+We have been using it to extract single columns from the data
+
+
+---
+### **$** can be used to create new columns
+
+We can also create new columns in the data set. 
+
+
+For example, here's a new column that says whether or not the interest rate on a loan is greater than 10%:
+--
+
+```r
+chi2$sal_gt100 &lt;- ifelse(chi2$AnnSalary &gt; 100000, TRUE, FALSE)
+head(chi2)
+```
+
+```
+## # A tibble: 6 x 4
+##   Name                Dept             AnnSalary sal_gt100
+##   &lt;chr&gt;               &lt;chr&gt;                &lt;dbl&gt; &lt;lgl&gt;    
+## 1 AARON,  JEFFERY M   POLICE              101442 TRUE     
+## 2 AARON,  KARINA      POLICE               94122 FALSE    
+## 3 AARON,  KIMBERLEI R GENERAL SERVICES    111024 TRUE     
+## 4 ABAD JR,  VICENTE M WATER MGMNT         114780 TRUE     
+## 5 ABARCA,  EMMANUEL   TRANSPORTN              NA NA       
+## 6 ABARCA,  FRANCES J  POLICE               48078 FALSE
+```
+
+
+---
+### Explaining **ifelse**
+
+The **ifelse** function is very handy and has three arguments:
+
+- an expression to evaluate
+- a result if the expression is TRUE
+- a result if the expression is FALSE
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

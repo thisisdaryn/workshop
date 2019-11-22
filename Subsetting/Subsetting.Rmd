@@ -1,0 +1,253 @@
+---
+title: "My Awesome Title"
+subtitle: "Daryn Ramsden"
+author: "thisisdaryn at gmail dot com"
+date: "last updated: `r Sys.Date()`"
+institution: ""
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: xaringan-themer.css
+    chakra: libs/remark.js
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(fig.align="center", fig.width=5, fig.height=5, warning = FALSE, message = FALSE)
+```
+
+```{r xaringan-themer, include = FALSE}
+library(xaringanthemer)
+duo_accent(
+  primary_color = "ivory",
+  secondary_color = "#310A31",
+  header_font_google = google_font("Roboto", "400"),
+  text_font_google   = google_font("Lato", "300"),
+  code_font_family = "Fira Code",
+  code_font_url = "https://cdn.rawgit.com/tonsky/FiraCode/1.204/distr/fira_code.css",
+  header_color = "#f54278",
+  title_slide_text_color = "#354a66"
+)
+```
+
+
+### A note 
+
+  * These slides make use of the <tt>chi_emps</tt> data set contained in the <tt>workshop<tt> package. 
+
+  * 
+
+```{r}
+library(workshop)
+data(chi_emps)
+```
+
+
+
+---
+### Getting summary information
+
+How big is the  data set? 
+--
+```{r}
+dim(chi_emps)
+```
+--
+What are the names of the columns?
+```{r}
+names(chi_emps)
+```
+--
+You can use **summary** or **View** as well to get more info. 
+
+
+---
+### summary 
+
+What happens when you run the following? 
+
+```{r eval = FALSE}
+summary(chi_emps)
+```
+
+---
+### summary 
+
+What happens when you run the following? 
+
+```{r}
+summary(chi_emps)
+```
+
+
+---
+### (View)
+
+
+and what about this?
+
+```{r eval = FALSE}
+View(chi_emps)
+```
+
+
+
+---
+### Selecting only some columns
+
+In base R, **[]** is used to subset data. For a 2d data structure, we have row conditions and column conditions separated by a comma inside the **[]**.
+--
+
+
+For example, we can select the first 5 rows and the first 4 columns of the *chi_emps* data frame:
+
+--
+```{r}
+chi_emps[c(1:5),c(1:4)]
+```
+
+
+
+---
+### Selecting columns by name
+
+It's often more practical to select columns by name however. The following code:
+  - keeps only the *Name*, *Dept*, *AnnSalary* columns
+  - displays the dimensions of the smaller data set
+--
+```{r}
+chi2 <- chi_emps[, c("Name", "Dept", 
+                    "AnnSalary")]
+dim(chi2)
+```
+--
+Note that there was no row constraint in the first line as we were intending to keep all rows of the data.
+
+---
+### Rows can also be selected using logical operators
+
+How do we select all the rows where the annual salary is in the interquartile range
+--
+
+
+The code below:
+  - keeps only the rows where the salary is between than $75408 and $97440 
+  - displays the first few rows
+--
+```{r}
+midsal <- chi2[chi2$AnnSalary >= 75408 & chi2$AnnSalary <= 97440, ]
+head(midsal)
+```
+--
+Note that there is no column constraint as we are keeping all the columns.
+
+
+---
+### What are the other logical operators that can be used in filtering rows?
+
+The previous slide made use of **<**, multiple other operators are available for filtering: 
+--
+```{r echo = FALSE}
+Operator <- c( "==", "!=", "<", "<=",  ">", ">=", "|", "&", "!")
+Meaning <- c("equal", "not equal", 
+             "less than", "less than or equal to", 
+              "greater than", "greater than or equal to",
+             "Or: at least one of the expressions is true", 
+             "And: Both expressions are true", 
+             "Not: the expression is not true" )
+optable <- data.frame(Operator, Meaning)
+kableExtra::kable(optable)
+```
+
+
+
+
+---
+### Some more examples
+
+How would we get a data set with only hourly paid employees?
+
+```{r}
+hourly <- chi_emps[chi_emps$SalHour == "Hourly", ]
+```
+
+
+
+
+---
+### Following up on that
+
+How would we get loans that meet both of the following:
+  - have an hourly rate more than $20/hr
+  - typical hours more than 25 
+--
+
+```{r}
+df <- hourly[(hourly$HourlyRate > 20) & 
+               (hourly$TypicalHours > 25), ]
+head(df)
+```
+
+
+---
+### Another example
+
+How would we get loans that meet either of the following:
+  - the Department is *PUBLIC LIBRARY* 
+  - the employee is Part-time, (<tt>FullPart</tt>: *P*) 
+  
+--
+```{r}
+lib_part <- chi_emps[chi_emps$Dept == "PUBLIC LIBRARY" | 
+                chi_emps$FullPart == "P", ] 
+head(lib_part)
+```
+
+  
+
+---
+### Using **$** to reference columns 
+
+Another means of subsetting data that we would have seen before is the **$** 
+--
+```{r fig.height=5}
+hist(chi_emps$HourlyRate)
+```
+
+
+
+--
+
+
+We have been using it to extract single columns from the data
+
+
+---
+### **$** can be used to create new columns
+
+We can also create new columns in the data set. 
+
+
+For example, here's a new column that says whether or not the interest rate on a loan is greater than 10%:
+--
+```{r}
+chi2$sal_gt100 <- ifelse(chi2$AnnSalary > 100000, TRUE, FALSE)
+head(chi2)
+```
+
+
+---
+### Explaining **ifelse**
+
+The **ifelse** function is very handy and has three arguments:
+
+- an expression to evaluate
+- a result if the expression is TRUE
+- a result if the expression is FALSE
+
