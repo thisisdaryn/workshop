@@ -1,0 +1,384 @@
+---
+title: "Exploratory Data Analysis"
+subtitle: "Daryn Ramsden"
+author: "thisisdaryn at gmail dot com"
+date: "last updated: `r Sys.Date()`"
+institution: ""
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: xaringan-themer.css
+    chakra: libs/remark.js
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(fig.align="center", fig.width=5, fig.height=5, warning = FALSE, message = FALSE)
+```
+
+```{r xaringan-themer, include = FALSE}
+library(xaringanthemer)
+duo_accent(
+  primary_color = "ivory",
+  secondary_color = "#310A31",
+  header_font_google = google_font("Roboto", "400"),
+  text_font_google   = google_font("Lato", "300"),
+  code_font_family = "Fira Code",
+  code_font_url = "https://cdn.rawgit.com/tonsky/FiraCode/1.204/distr/fira_code.css",
+  header_color = "#f54278",
+  title_slide_text_color = "#354a66"
+)
+```
+
+
+
+### A note 
+
+These slides assume your working directory contains the *data* folder that contains the following files:
+  - *Loans.csv*
+  - *ChicagoEmployees.csv*
+
+One way to ensure that you are in that directory is to open the *week2.Rproj* file. (After downloading the project folder *week2* from elearning.)
+
+You can do this in RStudio by File --> Open Project and then navigating to it at the location you downloaded it to.
+
+
+---
+### Let's start with the iris data set. 
+
+
+Here are the first few rows of the data frame (using the **head** function):
+```{r}
+head(iris)
+```
+
+
+Btw, there is also a **tail** function, that lets you look at the last few rows of the data.
+
+
+---
+### Getting a first look at a data set
+
+A function that often comes in handy when first exploring a data set is **summary**
+--
+```{r}
+summary(iris)
+```
+--
+It provides summary statistics for the columns (variables) in the data frame.
+---
+#### Calculating summary statistics on your own:
+
+How would you calculate some of those summary statistics on your own? e.g. for the mean and median of the sepal widths:
+
+--
+
+First, **mean**:
+```{r}
+mean(iris$Sepal.Width)
+```
+--
+Then, **median**
+```{r}
+median(iris$Sepal.Width)
+```
+
+
+The mean and the median look very close to each other. 
+
+---
+### Is the distribution symmetric?
+We can plot a histogram:
+--
+```{r fig.height = 5}
+hist(iris$Sepal.Width)
+```
+
+---
+### We can customise plots using extra parameters:  
+--
+```{r fig.height = 5}
+hist(iris$Sepal.Width, xlab = "Sepal Width", main = "Iris Data Set", 
+     col = "royalblue") 
+```
+
+
+---
+### What about the relationship between Sepal width and length?
+
+To show the relationship between two numerical variables we use **plot**:
+--
+
+```{r fig.height = 4.5}
+plot(iris$Sepal.Width, iris$Sepal.Length)
+```
+
+This relationship does not appear to be very strong. What is the correlation?
+---
+
+### Calculating correlation
+
+We can use **cor**:
+--
+```{r}
+cor(iris$Sepal.Width, iris$Sepal.Length)
+```
+--
+This is a weakly negative correlation i.e. length seems to generally decrease slightly with increases in width (and vice versa).
+
+
+---
+### Is there a relationship between the widths and lengths of the petals?
+--
+
+Here's the scatterplot:
+```{r fig.height = 4}
+plot(iris$Petal.Width, iris$Petal.Length)
+```
+--
+
+
+Ok, this correlation looks pretty strong to me.
+--
+```{r}
+cor(iris$Petal.Width, iris$Petal.Length)
+```
+
+---
+
+### What about Variance and standard deviation?
+
+Variances and standard deviations of vectors, can be found using the **var** and **sd** functions respectively:
+--
+
+```{r}
+var(iris$Petal.Length)
+```
+--
+
+```{r}
+sd(iris$Petal.Length)
+```
+
+
+---
+
+### Making boxplots to compare distributions
+
+You can use **boxplot** to compare numeric variables across the levels of a categorical variable. (The syntax we will use is slightly different to what we have used before):
+--
+```{r fig.height=5}
+boxplot(Sepal.Width ~ Species, data = iris)
+```
+
+
+
+---
+### Ok, now to work with data in a file 
+
+The **list.files** function can be used to see the files in a directory.
+
+```{r}
+list.files("data")
+```
+
+--
+
+This shows the 2 data sets in the data directory. 
+
+We can read in the *loans* data set using the function **read.csv**
+--
+```{r}
+#loans <- read.csv("data/Loans.csv", stringsAsFactors = FALSE)
+```
+
+--
+
+The loans data set has 10,000 rows and 17 columns
+
+```{r}
+dim(loans)
+```
+
+If you are using RStudio, you should see it in the Environment window. (And you can browse it in the source pane by clicking on the name *loans*).
+
+---
+### Getting counts of categorical variables
+
+An extremely useful function is **table** which gets counts of categorical variables. 
+
+--
+
+Using **table** to get the counts of different levels of the <tt>homeownership</tt> variable as in Figure 2.18 of the text.
+--
+```{r}
+table(loans$homeownership)
+```
+
+---
+### Making contingency tables
+
+We can also use **table** with 2 variables to make a table like the one in Figure 2.17 of the text:
+--
+```{r}
+table(loans$app_type, loans$homeownership)
+```
+--
+
+The **addmargins** function can be used to include the totals:
+--
+```{r}
+addmargins(table(loans$app_type, loans$homeownership))
+```
+---
+
+
+### A Slightly different way to do it
+
+Note that we could have chosen to store the results of the **table** function to a variable as an intermediate step instead:
+--
+```{r}
+ownapps <- table(loans$app_type, loans$homeownership)
+addmargins(ownapps)
+```
+
+---
+### Ok, now to make some bar plots
+
+First get the counts of the *homeownership* levels:
+
+```{r}
+ownership_counts <- table(loans$homeownership)
+```
+--
+
+Now to put them into the **barplot** function:
+--
+```{r fig.height = 4}
+barplot(ownership_counts)
+```
+
+
+---
+### What about barplots with 2d tables?
+
+--
+
+We can also use the 2d table, <tt>ownapps</tt> created previously:
+
+--
+```{r fig.height=5}
+barplot(ownapps) 
+```
+
+---
+### Are there other ways to show this bar chart?  
+
+--
+
+Real answer: Yes, you can customise plots as much as you want in R
+
+--
+
+For now: we will use the *beside* argument:
+--
+
+```{r fig.height=5}
+barplot(ownapps, beside = TRUE)
+```
+
+
+
+---
+### A little bit of customising
+
+--
+First, we will make a vector of colours. (Most common colour names are available):
+--
+```{r}
+colours <- c("blue", "yellow")
+```
+
+--
+Now to apply it to the plot, using the *col* argument:
+--
+```{r fig.height = 5}
+barplot(ownapps, beside = TRUE, col = colours)
+```
+
+
+---
+### Adding a legend to the plot
+
+A legend can be added by running the **legend** command immediately after the **barplot** function:
+--
+```{r fig.height=5}
+barplot(ownapps, beside = TRUE, col = colours)
+legend("top", legend = rownames(ownapps), fill = colours)
+```
+
+
+---
+### A brief pause: where did rownames come from?
+
+Remember that *ownapps* was a 2d table.
+--
+```{r}
+ownapps
+```
+--
+
+You can get the names of the rows in a table using the function **rownames**:
+--
+```{r}
+rownames(ownapps)
+```
+
+--
+
+And you can get the column names using the function **colnames**:
+--
+```{r}
+colnames(ownapps)
+```
+
+
+
+
+
+
+
+---
+### Using other colours if you wish
+
+Other colours can be selected using <a href = "https://www.w3schools.com/colors/colors_picker.asp">html colour codes</a>. For example, we can use a colour scheme close to the text's:
+--
+```{r}
+new_colours <- c("#569BBD", "#F4DD00")
+```
+
+Now run similar code as before for the plot:
+--
+```{r fig.height = 4.5}
+barplot(ownapps, beside = TRUE, col = new_colours)
+legend("top", legend = rownames(ownapps), fill = new_colours)
+```
+
+
+---
+### Ending note
+
+
+ - There were quite a few commands used in these slides. Some are more important than others and you will find them recurring more frequently in your use of R.  
+ 
+
+  - for many mathematical functions the corresponding R function is usually easy to figure out e.g. **mean**, **median**, **sd**, **min**, **max** 
+
+
+
