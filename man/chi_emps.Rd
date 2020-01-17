@@ -12,7 +12,7 @@
 \item{FullPart}{Employee's status: full-time or part-time}
 \item{SalHour}{Whether the employee is salaried or hourly-paid}
 \item{TypicalHours}{Typical hours per week for those who are hourly-paid}
-\item{AnnSalary}{Annual Salary for those who are salaried}
+\item{AnnualSalary}{Annual Salary for those who are salaried}
 \item{HourlyRate}{Hourly rate for those who are hourly-paid}
 }}
 \source{
