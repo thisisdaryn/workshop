@@ -4,7 +4,17 @@
 \name{groceries}
 \alias{groceries}
 \title{Prices of selected grocery items in Trinidad and Tobago in November 2018}
-\format{An object of class \code{spec_tbl_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 846 rows and 8 columns.}
+\format{Data frame with columns
+\describe{
+\item{No.}{Item identifier as assigned by Ministry of Trade and Information}
+\item{ITEMS}{Name of item}
+\item{BRAND}{Brand of item}
+\item{SIZE}{Item size}
+\item{Outlet}{Name of the grocery}
+\item{Town}{Location of the grocery}
+\item{Region}{Location: Central, East, North, South, Tobago, West}
+\item{Price}{Item price}
+}}
 \source{
 <https://tradeind.gov.tt/tag/supermarket-pricelist/>
 }

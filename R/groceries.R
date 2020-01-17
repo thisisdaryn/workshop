@@ -8,7 +8,7 @@
 #' \item{No.}{Item identifier as assigned by Ministry of Trade and Information}
 #' \item{ITEMS}{Name of item}
 #' \item{BRAND}{Brand of item}
-#' \item{SIZE{Item size}
+#' \item{SIZE}{Item size}
 #' \item{Outlet}{Name of the grocery}
 #' \item{Town}{Location of the grocery}
 #' \item{Region}{Location: Central, East, North, South, Tobago, West}
