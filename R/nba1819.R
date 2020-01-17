@@ -2,7 +2,7 @@
 #'
 #'
 #'
-#' @source <https://www.basketball-reference.com/leagues/NBA_2020_games.html>
+#' @source <https://www.basketball-reference.com/leagues/NBA_2019_games.html>
 #' @format Data frame with columns
 #' \describe{
 #'\item{Date}{Date of the game}
