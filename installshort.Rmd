@@ -61,10 +61,17 @@ install.packages("nycflights13")
 ```{r message = FALSE, warning = FALSE}
 library(ggplot2)
 library(workshop)
+library(stringr)
 
 big_depts <- names(sort(table(chi_emps$Dept), decreasing = TRUE)[1:5])
 df <- chi_emps[chi_emps$Dept %in% big_depts, ]
 ggplot(data = df, aes(x = Dept, y = AnnSalary)) + geom_boxplot()
+
+lara_tests <- separate(lara, Match, into = c("Format", "Matchnum")) %>% 
+  filter(Format == "Test")
+
+ggplot(lara_tests, aes(x = Opp, y = Runs)) + geom_bar()
+
 ```
 
 
