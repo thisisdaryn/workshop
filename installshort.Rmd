@@ -6,7 +6,7 @@ output:
 ---
 
 
-For a more detailed explanation of this process [click here](installdetailed.html): 
+
 
 
 ## 1. Install R and RStudio
@@ -14,18 +14,18 @@ For a more detailed explanation of this process [click here](installdetailed.htm
   * Download R @ The [R Project’s Home Page](https://cloud.r-project.org/)
     
     * Windows: 
-      * [https://cloud.r-project.org/bin/windows/base/R-3.6.1-win.exe](https://cloud.r-project.org/bin/windows/base/R-3.6.1-win.exe)
+      * [https://cloud.r-project.org/bin/windows/base/R-3.6.2-win.exe](https://cloud.r-project.org/bin/windows/base/R-3.6.2-win.exe)
     
     * Mac: 
-      * [https://cloud.r-project.org/bin/macosx/R-3.6.1.pkg](https://cloud.r-project.org/bin/macosx/R-3.6.1.pkg)
+      * [https://cloud.r-project.org/bin/macosx/R-3.6.2.pkg](https://cloud.r-project.org/bin/macosx/R-3.6.2.pkg)
     * Linux
       * [https://cloud.r-project.org/bin/linux/](https://cloud.r-project.org/bin/linux/)
     
   * Download RStudio Desktop from [RStudio](https://www.rstudio.com/products/rstudio/download/#download)
     * Windows
-      * [https://download1.rstudio.org/desktop/windows/RStudio-1.2.5019.exe](https://download1.rstudio.org/desktop/windows/RStudio-1.2.5019.exe)
+      * [https://download1.rstudio.org/desktop/windows/RStudio-1.2.5033.exe](https://download1.rstudio.org/desktop/windows/RStudio-1.2.5033.exe)
     * Mac
-      * [https://cloud.r-project.org/bin/macosx/R-3.6.1.pkg](https://cloud.r-project.org/bin/macosx/R-3.6.1.pkg)
+      * [https://download1.rstudio.org/desktop/macos/RStudio-1.2.5033.dmg](https://download1.rstudio.org/desktop/macos/RStudio-1.2.5033.dmg)
     * Linux
       * [https://www.rstudio.com/products/rstudio/download/#download](https://www.rstudio.com/products/rstudio/download/#download)
   

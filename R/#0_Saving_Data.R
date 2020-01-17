@@ -16,18 +16,29 @@ fields <- c("Unique Key", "Created Date", "Closed Date", "Agency", "Agency Name"
             "Complaint Type", "Descriptor", "Incident Zip" , "Status", "Resolution Description",
             "Resolution Action Updated Date", "Borough", "Latitude", "Longitude")
 
-nyc311 <- read_csv("input_data/nyc311Oct2019.csv")
-
-set.seed(2001)
-nyc311 <- nyc311[sample(dim(nyc311)[1], 34567, replace = FALSE), ] %>%
-  arrange(Created)
-
-
+nyc311 <- read_csv("input_data/311_Service_Requests_Jan2020_narrow.csv") %>%
+  select(-Address)
 
 
 
 ### Chicago employees
-chi_emps <- read_csv("input_data/Current_Employee_Names__Salaries__and_Position_Titles.csv")
+chi_emps <- read_csv("input_data/ChicagoEmployeesOct2019.csv")
+
+### Toronto highrises
+
+
+highrises <- read_csv("input_data/Torontohighrises.csv") %>%
+  separate(Opened, into = c("Opened", "OpenTime"), sep = " ") %>%
+  separate(Closed, into = c("Closed", "ClosedTime"), sep = " ") %>%
+  select(id, Opened, Closed, Address, Desc, Lat, Lon, Ward) %>%
+  separate(Desc, into = c("Code", "Desc"), sep = " ", extra = "merge") %>%
+  mutate(violation = ifelse(is.na(Code), FALSE, TRUE))
+
+property <- group_by(toronto, Address, Lat, Lon) %>%
+  summarise(insp = length(unique(Opened)), viol_insp = insp - sum(is.na(Code)))
+
+inspections <- group_by(toronto, Address, Lat, Lon, Opened) %>%
+  summarise(Violations = sum(violation))
 
 
 
@@ -45,8 +56,8 @@ nba1819 <- read_csv("input_data/nba1819.csv") %>% dplyr::select(-Box)
 
 #### Sales and inventories
 
-sales <- read_xlsx("input_data/US_Sales_Inventories.xlsx", sheet = "Sales",skip = 14)
-inventories <- read_xlsx("input_data/US_Sales_Inventories.xlsx", sheet = "Inventories", skip = 14)
+#sales <- read_xlsx("input_data/US_Sales_Inventories.xlsx", sheet = "Sales",skip = 14)
+#inventories <- read_xlsx("input_data/US_Sales_Inventories.xlsx", sheet = "Inventories", skip = 14)
 
 sales <- sales[complete.cases(sales), ]
 inventories <- inventories[complete.cases(inventories), ]
@@ -64,18 +75,51 @@ us_unemp <- read_csv("input_data/unemp.csv")
 lara <- notitia::lara
 
 save(nyc311,  file = "data/nyc311.RData")
+write_csv(nyc311, "../python/jupyter/data/nyc311.csv")
+
 save(movies,  file = "data/movies.RData")
+write_csv(movies, "../python/jupyter/data/movies.csv")
+
 save(chi_emps, file = "data/chi_emps.RData")
+write_csv(chi_emps, "../python/jupyter/data/chi_emps.csv")
+
 save(sales, file = "data/sales.RData")
+write_csv(sales, "../python/jupyter/data/sales.csv")
+
+
 save(inventories, file = "data/inventories.RData")
+write_csv(inventories, "../python/jupyter/data/inventories.csv")
+
+
 save(rafa_novak, file = "data/rafa_novak.RData")
+write_csv(rafa_novak, "../python/jupyter/data/rafa_novak.csv")
+
 save(apple, file = "data/apple.RData")
+write_csv(apple, "../python/jupyter/data/apple.csv")
+
 save(areas, file = "data/areas.RData")
+write_csv(areas, "../python/jupyter/data/areas.csv")
+
 save(populations, file = "data/populations.RData")
+write_csv(populations, "../python/jupyter/data/populations.csv")
+
 save(nyc_sat10, file = "data/nyc_sat10.RData")
+write_csv(nyc_sat10, "../python/jupyter/data/nyc_sat10.csv")
+
 save(nyc_sat12, file = "data/nyc_sat12.RData")
+write_csv(nyc311, "../python/jupyter/data/nyc_sat12.csv")
+
 save(us_unemp, file = "data/us_unemp.RData")
+write_csv(nyc311, "../python/jupyter/data/us_unemp.csv")
+
 save(lara, file = "data/lara.RData")
+write_csv(nyc311, "../python/jupyter/data/lara.csv")
+
+save(highrises, file = "data/highrises.RData")
+write_csv(highrises, "../python/jupyter/data/highrises.csv")
+
+save(nba1819, file = "data/nba1819.RData")
+write_csv(highrises, "../python/jupyter/data/nba1819.csv")
 
 devtools::document()
 
